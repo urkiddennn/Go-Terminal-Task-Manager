@@ -65,17 +65,27 @@ func listTask(tm TaskManager) {
 }
 
 func markDone(tm *TaskManager) {
-	var options []string
+	if len(tm.Tasks) == 0 {
+		pterm.Warning.Println("No task Avaailable")
+		return
+	}
 
+	var options []string
 	for _, tasks := range tm.Tasks {
 		options = append(options, tasks.taskName)
 	}
 
-	fmt.Println("All options: ", options)
-
 	selectedOption, _ := pterm.DefaultInteractiveSelect.WithOptions(options).Show()
 
-	fmt.Println("The selectedOption is ", selectedOption)
+	for i, task := range tm.Tasks {
+		if task.taskName == selectedOption {
+			tm.Tasks[i].taskDaone = true
+			pterm.Success.Printfln("Task '%s' markded as done!", selectedOption)
+			return
+		}
+	}
+	pterm.Error.Printfln("Task '%s' not found!", selectedOption)
+
 	pterm.Info.Printfln("Selected option: %s", pterm.Green(selectedOption))
 }
 
