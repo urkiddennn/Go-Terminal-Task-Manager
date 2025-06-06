@@ -129,6 +129,7 @@ func deleteTask(tm *TaskManager) {
 	for i, task := range tm.Tasks {
 		if task.TaskName == selectedOption {
 			tm.Tasks = append(tm.Tasks[:i], tm.Tasks[i+1:]...)
+			// tm.Tasks = slices.Delete(tm.Tasks[:i], tm.Tasks[i+1:])
 			if err := saveTask(*tm); err != nil {
 				pterm.Error.Printfln("Failed to save tasks: %v", err)
 				return
